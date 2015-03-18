@@ -1,0 +1,171 @@
+---
+title: "Your first R session"
+output:
+  html_document:
+    toc: true
+    theme: united
+---
+
+
+```{r, echo=FALSE, purl=FALSE}
+knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
+```
+
+
+> ## Learning Objectives
+>
+> * Familiarize participants with R syntax
+> * Understand the concepts of objects and assignment
+> * Understand the concepts of vector and data types
+> * Get exposed to a few functions
+
+
+
+## Creating objects
+
+```{r, purl=TRUE, echo=FALSE}
+## Creating objects
+```
+
+Let's start by creating a simple object:
+
+```{r, purl=FALSE}
+x <- 10
+x
+```
+
+We assigned to `x` the number 10. `<-` is the assignment operator. It assigns
+values on the right to objects on the left. Mostly similar to `=` but not
+always. Learn to use `<-` as it is good programming practice. Using `=` in place
+of `<-` can lead to issues down the line. In RStudio, use the key combination
+`Alt + -` to generate the assignment operator.
+
+`=` should only be used to specify the values of arguments in functions for
+instance `read.csv(file="data/some_data.csv")`.
+
+Now that `x` exists in R memory, We can do things with it. For instance:
+
+```{r, purl=FALSE}
+x * 2
+x + 5
+x + x
+```
+
+or we can create new objects using `x`:
+
+```{r, purl=FALSE}
+y <- x + x + 5
+```
+
+Let's try something different:
+
+```{r, purl=FALSE}
+x <- c(2, 4, 6)
+x
+```
+
+Two things:
+
+- we overwrote the content of `x`
+- `x` now contains 3 elements
+
+Using the `[]`, we can access individual elements of this object:
+
+```{r, purl=FALSE}
+x[1]
+x[2]
+x[3]
+```
+
+---
+
+### Challenge
+
+Without typing this in R, can you guess the content of this vector?
+
+```{r, purl=TRUE}
+q <- c(x, x, 5)
+```
+
+What is the value of `y` at the end of this script?
+
+```{r, purl=TRUE}
+x <- 1
+y <- x + 2
+x <- 3
+# y <- ???
+```
+
+---
+
+Objects can be given any name such as `x`, `current_temperature`, or
+`subject_id`. You want your object names to be explicit and not too long. They
+cannot start with a number (`2x` is not valid but `x2` is). R is case sensitive
+(e.g., `weight_kg` is different from `Weight_kg`). There are some names that
+cannot be used because they represent the names of fundamental functions in R
+(e.g., `if`, `else`, `for`, see
+[here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)
+for a complete list). In general, even if it's allowed, it's best to not use
+other function names (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). In doubt
+check the help to see if the name is already in use. It's also best to avoid
+dots (`.`) within a variable name as in `my.dataset`. It is also recommended to
+use nouns for variable names, and verbs for function names.
+
+
+We can also use these objects with functions, for instance to compute the mean
+and the standard deviation:
+
+```{r, purl=FALSE}
+x <- c(1, 3, 5, 6, 3, 5)
+mean(x)
+sd(x)
+```
+
+This is useful to print the value of the mean or the standard deviation, but we
+can also save these values in their own variables:
+
+```r
+mean_x <- mean(x)
+mean_x
+```
+
+The function `ls()` returns the objects that are currently in the memory of
+your session.
+
+The function `data()` allows you to load into memory datasets that are provided
+as examples with R (or some packages). Let's load the `Nile` dataset that
+provides the annual flow of the river Nile between 1871 and 1970.
+
+```r
+data(Nile)
+```
+
+Using `ls()` shows you that the function `data()` made the variable `Nile`
+available to you.
+
+Let's make an histogram of the values of the flows:
+
+```r
+hist(Nile)
+```
+
+---
+
+### Challenge
+
+The following: `abline(v=100, col="red")` would draw a vertical line on an
+existing plot at the value 100 colored in red.
+
+How would you add such a line to our histogram to show where the mean falls in
+this distribution?
+
+---
+
+We can now save this plot in its own file:
+
+```{r, eval=FALSE}
+pdf(file="nile_flow.pdf")
+hist(Nile)
+abline(v=mean(Nile), col="red")
+dev.off()
+```

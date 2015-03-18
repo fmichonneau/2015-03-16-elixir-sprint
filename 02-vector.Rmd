@@ -1,0 +1,159 @@
+---
+title: "Vectors"
+output:
+  html_document:
+    toc: true
+    theme: united
+---
+
+```{r, echo=FALSE, purl=FALSE}
+knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
+```
+
+
+## Vectors
+
+Vectors are at the heart of how data are stored into R's memory. Almost
+everything in R is stored as a vector. When we typed `x <- 10` we created a
+vector of length 1. When we typed `x <- c(2, 4, 6)` we created a vector of
+length 3. These vectors are of class `numeric`. Vectors can be of 6 different
+classes (we'll mostly work with 4).
+
+We have already seen how to create numeric vectors, but vectors can also contain
+characters:
+
+```{r, purl=FALSE}
+mass <- c(50, 60, 65, 82)
+mass
+animals <- c("mouse", "rat", "dog", "elephant")
+animals
+```
+
+### The different "classes" of vector
+
+Vectors can hold numbers, characters, logical values and a special class that
+characterizes R, factors.
+
+* `"numeric"` is the general class for vectors that hold numbers (e.g., `c(1, 5,
+  10)`)
+* `"integer"` is the class for vectors for integers. To differentiate them from
+  `numeric` we must add an `L` afterwards (e.g., `c(1L, 2L, 5L)`)
+* `"character"` is the general class for vectors that hold text strings (e.g.,
+  `c("blue", "red", "black")`)
+* `"logical"` for holding `TRUE` and `FALSE` (boolean data type)
+
+The other types of vectors are `"complex"` (for complex numbers) and `"raw"` a
+special internal type that is not of use for the majority of users.
+
+If you want to check the class of your vector, you can use the `class()` function.
+
+```{r}
+class(mass)
+class(animals)
+```
+
+### How to check the length of your vector
+
+```{r}
+length(mass)
+length(animals)
+```
+
+
+### How to add elements to your vector
+
+You can add elements to your vector simply by using the `c()` function:
+
+```{r, purl=FALSE}
+mass <- c(mass, 90) # adding at the end
+mass <- c(30, mass) # adding at the beginning
+mass
+```
+
+### How to access elements of a vector?
+
+They can be accessed by their indices:
+
+```r
+mass[1]
+mass[c(2, 3)]
+```
+
+repeatitions are allowed:
+
+```r
+mass[c(2,3,2,4,1,2)]
+```
+
+### How to update/replace the value of a vector?
+
+```r
+mass[4] <- 122
+```
+
+
+### How to remove elements from a vector?
+
+```r
+mass[-2]          # doesn't affect the content of mass
+mass[-c(1, 3, 5)]
+```
+
+
+### Sequences
+
+`:` is a special function that creates numeric vectors of integer in increasing
+or decreasing order, test `1:10` and `10:1` for instance. The function `seq()`
+(for __seq__uence) can be used to create more complex patterns:
+
+```{r, results='show', purl=FALSE}
+seq(1, 10, by=2)
+seq(5, 10, length.out=3)
+seq(50, by=5, length.out=10)
+seq(1, 8, by=3) # sequence stops to stay below upper limit
+seq(1.1, 2, length.out=10)
+```
+
+### Repeating
+
+```r
+x <- rep(8, 4)
+x
+rep(1:3, 3)
+```
+
+### Operations on vectors
+
+```r
+x <- c(5, 10, 15)
+x + 10
+x + c(10, 15, 20)
+x * 10
+x * c(2, 4, 3)
+```
+
+Note that operations on vectors are elementwise.
+
+### Recycling
+
+R allows you to do operations on vectors of different lengths. The shorter
+vector will be "recycled" (~ repeated) to match the length of the longer one:
+
+```r
+x <- c(5, 10, 15)
+x + c(2, 4, 6, 8, 10, 12)     # no warning when it's a multiple
+x + c(2, 4, 6, 8, 10, 12, 14) # warning
+```
+
+### Boolean operations and Filtering
+
+```r
+u <- c(1, 4, 2, 5, 6, 3, 7)
+u[TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE]
+u < 3
+u[u < 3]
+u[u < 3 | u >= 4]
+u[u > 5 & u < 1 ] ## nothing matches this condition
+u[u > 5 & u < 8]
+sum(u < 3)
+```
